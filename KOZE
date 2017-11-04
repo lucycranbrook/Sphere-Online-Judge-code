@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int r[] = {-1, 1, 0, 0};
+int c[] = {0, 0, -1, 1};
+char haha[251][251];
+int visit[251][251];
+int m, n, k, a, sheep = 0, wolf = 0;
+
+inline bool cek(int i, int j){
+	return (i >= 0 && i < m && j >= 0 && j < n);
+}
+
+void dfs(int i, int j){
+	visit[i][j] = 1;
+	for(int p = 0; p < 4; p++){
+		int ip = i + r[p];
+		int jp = j + c[p];
+		if(cek(ip, jp) && visit[ip][jp] == -1){
+			if(haha[ip][jp] == 'k'){
+				k++; dfs(ip, jp);
+			}else if(haha[ip][jp] == 'v'){
+				a++; dfs(ip, jp);
+			}else if(haha[ip][jp] == '.'){
+				dfs(ip, jp);
+			}
+		}
+	}
+}
+
+int main(){
+	memset(visit, -1, sizeof visit);
+	scanf("%d %d", &m, &n);
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			cin >> haha[i][j];
+		}
+	}
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			if(haha[i][j] != '#' && visit[i][j] == -1) {
+				k = 0; a = 0;
+				if(haha[i][j] == 'k') k++;
+				else if(haha[i][j] == 'v') a++;
+				dfs(i, j);
+				if(k > a) sheep += k;
+				else wolf += a;
+//				printf("%d %d\n", k, a);
+			}
+		}
+	}
+	printf("%d %d\n", sheep, wolf);
+}
